@@ -1,6 +1,6 @@
 require('./styles/map_style.scss');
-import states from '../data/states';
 import bboxes from '../data/bboxes';
+import controls from './lib/map_controls';
 const geoViewport = require('@mapbox/geo-viewport');
 const mapboxgl = require('mapbox-gl');
 
@@ -12,58 +12,9 @@ const mapId = 'bhermse.d7j45d9k'; // used by the click handler only
 var continentalView = function(w,h) { return geoViewport.viewport([-128.8, 23.6, -65.4, 50.2], [w, h]); }
 var continental = continentalView(window.innerWidth/2, window.innerHeight/2);
 
-console.log(bboxes);
-
-// Create an object to list all the possible districts for a given state or territory
-var stateList = states.map(function(d) { return { name: d.Name, abbr: d.USPS }; });
-var possibleDistricts = {};
-stateList.map(function(d) { possibleDistricts[d.abbr] = [] });
-
-// For each state, add the numbers of its districts
-for (let d in bboxes) {
-  possibleDistricts[d.slice(0,2)].push(d.slice(2,d.length));
-}
-
-//** INTERACTIVE MENU
-// Sort in ascending order each state's list of districts
-for (let d in possibleDistricts) {
-  possibleDistricts[d].sort(function(a,b) {
-    if (b === "") { return 1 } else { return parseInt(a) - parseInt(b); }
-  });
-  // For states with only one district, make the list of districts only contain an at-large choice
-  if (possibleDistricts[d].length === 2) possibleDistricts[d] = ['00'];
-}
-
-// Add an option to the interactive State menu for each state
 const stateSelect = document.querySelector('#state');
-stateList.map(function(d) {
-   var option = document.createElement("option");
-   option.text = d.name;
-   option.value = d.abbr;
-   stateSelect.appendChild(option);
-})
-
-// Create an event listener that responds to the selection of a state from the menu
-stateSelect.onchange = () => {
-  if (stateSelect.value === '') { window.location.hash = '#' }
-  else {
-    const hash = window.location.hash;
-    const newHash = 'state=' + stateSelect.value;
-    window.location.hash = newHash;
-  }
-};
-
-// Create an event listener that responds to the selection of a district from the menu
-const districtSelect = document.querySelector('#district');
-districtSelect.onchange = () => {
-  const hash = window.location.hash;
-  const currentDistrictIndex = hash.indexOf('&district=');
-  const newHash = currentDistrictIndex >= 0 ?
-    hash.slice(0,currentDistrictIndex) + '&district=' + districtSelect.value :
-    hash + '&district=' + districtSelect.value ;
-  window.location.hash = newHash;
-};
-
+const possibleDistricts = controls.initializeControls();
+controls.addListeners();
 
 const map = new mapboxgl.Map({
    container: 'map',

@@ -281,4 +281,6 @@ const states = [
   }
 ];
 
-export default states;
+const stateList = states.map(function(d) { return { name: d.Name, abbr: d.USPS }; });
+
+export default stateList;
