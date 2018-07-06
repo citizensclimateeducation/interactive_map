@@ -20,16 +20,12 @@ body { margin:0; padding:0; }
 .selector { display: inline-block; float: left; margin: 4px; }
 
 .marker {
-   /* border:1px solid gray; */
    cursor: pointer;
-   /* height: 50px;
-   width: 50px; */
-   /*background-image: url('./marker-15.csv');*/
-   /* background-image: url('./marker-icon-red.png'); */
    background-color: rgba(0, 0, 0, 0);
 }
 
 .pin {
+   cursor: pointer;
    position: absolute;
    border-radius: 50%;
    border: 8px solid red;
@@ -46,4 +42,9 @@ body { margin:0; padding:0; }
    left: -6px;
    border: 10px solid transparent;
    border-top: 17px solid red;
+}
+
+/* popup styling */
+.mapboxgl-popup {
+   max-width: 400px;
 }

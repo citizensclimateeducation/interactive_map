@@ -1,3 +1,4 @@
+const mapboxgl = require('mapbox-gl');
 import bboxes from '../../data/bboxes';
 const geoViewport = require('@mapbox/geo-viewport');
 import { continentalView } from './continental_view';
@@ -92,24 +93,21 @@ export default function(map, possibleDistricts) {
     // Record that it initial page load and the hash still needs to be checked
     checkHash(map, possibleDistricts, baseStyle, true);
 
-    // A click handler that shows what was under the cursor where the user clicked.
-    map.on("click", function(e) {
-      var district = null;
+   map.on('click', function (e) {
+      var features = map.queryRenderedFeatures(e.point, {
+         layers: ['chapter-locations']
+      });
 
-      // The map control provides a client-side-only way to determine what
-      // is under the cursor. We restrict the query to only the layers that
-      // provide congressional district polygons. Note that this only scans
-      // features that are currently shown on the map. So if you've filtered
-      // the districts so only a state or a single district is showing, this
-      // will restrict the query to those districts.
-      var features = map.queryRenderedFeatures(e.point, { layers: ["districts_1", "districts_2", "districts_3", "districts_4", "districts_5"] });
-      if (features.length > 0)
-         // The feature properties come from the original GeoJSON uploaded to Mapbox.
-         district = features[0].properties;
-      if (district) {
-        alert("That's " + district.state + "-" + district.number + ", i.e." + district.title_long + ".");
-      } else {
-        alert("You clicked on a location that is not within a U.S. congressional district.")
+      if (!features.length) {
+         return;
       }
-   })
+
+      var feature = features[0];
+
+      var popup = new mapboxgl.Popup({ offset: [0, -15] })
+         .setLngLat(feature.geometry.coordinates)
+         .setHTML("<h3>" + feature.properties.Name + '</h3><p>' + feature.properties.Description + '</p>')
+         .setLngLat(feature.geometry.coordinates)
+         .addTo(map);
+   });
 };
