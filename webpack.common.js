@@ -1,4 +1,3 @@
-process.env.NODE_ENV = 'development';
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -9,16 +8,10 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
  });
 
 module.exports = {
-   mode: 'development',
    entry: './src/main.js',
    output: {
        path: path.resolve(__dirname, 'build'),
        filename: 'main.bundle.js'
-   },
-   devServer: {
-       inline: true,
-       contentBase: __dirname + '/build',
-       port: 3000
    },
   module: {
    rules: [
