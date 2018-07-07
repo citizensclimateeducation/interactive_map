@@ -104,9 +104,14 @@ export default function(map, possibleDistricts) {
 
       var feature = features[0];
 
+      const popupText = `<h3>${feature.properties.Name}</h3>
+      <p>The <a href="${feature.properties.Web}">${feature.properties.Name}"</a> chapter meets monthly. For more information 
+      on how to become involved, please email, 
+      <a href="mailto:${feature.properties.Email}">${feature.properties.Email}</a>`;
+
       var popup = new mapboxgl.Popup({ offset: [0, -15] })
          .setLngLat(feature.geometry.coordinates)
-         .setHTML("<h3>" + feature.properties.Name + '</h3><p>' + feature.properties.Description + '</p>')
+         .setHTML(popupText)
          .setLngLat(feature.geometry.coordinates)
          .addTo(map);
    });

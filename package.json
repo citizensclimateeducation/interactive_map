@@ -10,6 +10,7 @@
     "start": "NODE_ENV=production node server.js",
     "build": "webpack -p --config webpack.prod.js",
     "prod": "NODE_ENV=production node server.js",
+    "dev": "webpack-dev-server --config webpack.dev.js",
     "postinstall": "webpack -p --config webpack.prod.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
