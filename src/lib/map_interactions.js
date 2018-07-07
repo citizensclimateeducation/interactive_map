@@ -105,7 +105,7 @@ export default function(map, possibleDistricts) {
       var feature = features[0];
 
       const popupText = `<h3>${feature.properties.Name}</h3>
-      <p>The <a href="${feature.properties.Web}">${feature.properties.Name}"</a> chapter meets monthly. For more information 
+      <p>The <a href="${feature.properties.Web}">${feature.properties.Name}</a> chapter meets monthly. For more information 
       on how to become involved, please email, 
       <a href="mailto:${feature.properties.Email}">${feature.properties.Email}</a>`;
 
